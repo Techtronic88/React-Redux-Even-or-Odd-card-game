@@ -1,22 +1,27 @@
-import React  from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Switch, Route } from "react-router-dom";
-import { createBrowserHistory } from 'history';
-import MusicMaster from "./projects/music-master/components/App"
-import App from "./components/App";
-import Jokes from "./components/Jokes";
-import Header from "./components/Header";
-import "./index.css";
+import './index.css';
+import { createStore} from "redux";
+import { Provider } from "react-redux";
+import App from './components/App'; 
+import rootReducer from "./reducers" // The only file in reducers will be selected automaticlly. 
+import { composeWithDevTools } from 'redux-devtools-extension';
 
+
+
+
+const store = createStore(rootReducer, composeWithDevTools());
+
+
+
+// Store.subscribe takes a call back which fire everytime store gets interacted with and updated 
+store.subscribe(() => console.log("store.getState()", store.getState()));
 
 ReactDOM.render(
-    <Router history={createBrowserHistory()}>
-        <Switch>
-            <Route exact path="/" render={() => <Header><App /></Header>} />
-            <Route path="/jokes" render={() => <Header><Jokes /></Header>} />
-            <Route path="/music-master" render={() => <Header><MusicMaster /></Header>} />
-            
-        </Switch>
-    </Router>,
+    
+    <Provider store={store}>
+      <App /> 
+    </Provider>,
     document.getElementById('root')
-);
+    );
+

@@ -1,48 +1,50 @@
 import React, { Component } from 'react';
-import Projects from "./Projects";
-import SocialProfiles from './SocialProfiles';
-import profilePic from "../assets/profilePic.jpg"
-import Title from "./Title";
-import "../index.css"
+import { connect } from "react-redux";
+import {startGame,  cancelGame} from "../action/setting";
+import Instruction from "./Instruction"
+
+
 
 class App extends Component {
-    state = {displayBio: false}
-    
+  
+// THIS IS only use for when we use mapStateToProps parameter of connect()  
+// gameCancel = () => { return this.props.dispatch(cancelGame())}
+// beginGame = () => { return this.props.dispatch(startGame())}
 
-    toggleRender = () => {
-        this.setState({displayBio: !this.state.displayBio})
-    }
-
-    render() {
-        return (
-            <div> 
-                <img src={profilePic} alt="profile" className="profile" />
-                <h1> Hello there, I am Tom </h1>
-                {this.state.displayBio ? <Title /> : null}
+render() {
+console.log('this', this)
+    return (
+      <div> 
+                <h2>&#9828;&#9825; Even or Odd	&#9831;&#9826; </h2>
                 {
-                    this.state.displayBio ?  (
-                             <div>
-                                 
-                                 <p> My current tech stack: HTML/CSS/Javascript/React-Redux-React Hooks.</p>
-                                 <p> I am always interested in contributing to useful projects</p>
-                                 <p> Great Design + Coding + Product Management = Magic</p>
-                                 <button onClick={this.toggleRender}> Show Less</button>
-                             </div>
-                         ): (
-                             <div>
-                             <button onClick={this.toggleRender}>Read More</button> 
-                             </div>
-                         )
-                    }
+                  this.props.gameStarted ? (
+                    <div>
+                        <h3> The game is on </h3> <br/>
+                        <button onClick={this.props.cancelGame}>Cancel Game</button>
+                    </div>
+                  ): (
+                    <div>
+                        <h3> The game is done  </h3><br/>
+                        <button onClick={this.props.startGame}>Start Game</button>
+                    </div>
+                  )
+                }
                 <hr />
-                <Projects />  
-                <hr />
-                <h1>Connect with me</h1>
-                <SocialProfiles /> 
-            </div>
-        )
-    }
+                <Instruction />
+      </div>
+    )
+  }
+}
+const mapStateToProps = state => {
+   console.log("state", state );
+      return {gameStarted: state.gameStarted };
 }
 
-export default App
+const mapDispatchtoProps =  {
+    startGame,
+    cancelGame 
+}
+
+const componentConnector = connect(mapStateToProps, mapDispatchtoProps);
+export default componentConnector(App);
 
