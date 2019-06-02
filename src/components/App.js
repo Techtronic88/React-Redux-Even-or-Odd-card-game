@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import {startGame,  cancelGame} from "../action/setting";
+import Instruction from "./Instruction"
 
 
 
@@ -28,6 +29,8 @@ console.log('this', this)
                     </div>
                   )
                 }
+                <hr />
+                <Instruction />
       </div>
     )
   }
