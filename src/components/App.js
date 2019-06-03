@@ -10,7 +10,6 @@ class App extends Component {
 // THIS IS only use for when we use mapStateToProps parameter of connect()  
 // gameCancel = () => { return this.props.dispatch(cancelGame())}
 // beginGame = () => { return this.props.dispatch(startGame())}
-
 render() {
 console.log('this', this)
     return (
@@ -35,16 +34,21 @@ console.log('this', this)
     )
   }
 }
-const mapStateToProps = state => {
-   console.log("state", state );
-      return {gameStarted: state.gameStarted };
-}
 
-const mapDispatchtoProps =  {
-    startGame,
-    cancelGame 
-}
+// JUST A QUICK NOTE: We can shorten this code 
+// const mapStateToProps = state => {
+//    console.log("state", state );
+//       return {gameStarted: state.gameStarted };
+// }
 
-const componentConnector = connect(mapStateToProps, mapDispatchtoProps);
-export default componentConnector(App);
+// const mapDispatchtoProps =  {
+//     startGame,
+//     cancelGame 
+// }
+
+//export default connect(mapStateToProps, mapDispatchtoProps) (App);
+
+// Alternative we can use this way as well 
+export default connect ( state =>  ({ gameStarted: state.gameStarted }),
+{startGame, cancelGame}) (App);
 
