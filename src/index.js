@@ -1,27 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import { createStore} from "redux";
-import { Provider } from "react-redux";
-import App from './components/App'; 
-import rootReducer from "./reducers" // The only file in reducers will be selected automaticlly. 
-import { composeWithDevTools } from 'redux-devtools-extension';
+import  { SET_GAME_STARTED, SET_INSTRUCTIONS_EXPANDED, DECK } from "../action/types";
+
+const DEFAULT_SETTINGS = {
+    gameStarted: true,
+    instructionsExpanded: false
+}
 
 
+const rootReducer = (state = DEFAULT_SETTINGS, action) => {
+    console.log('state', state, 'action', action);
+    if(action.type === SET_GAME_STARTED){
+        return {
+            gameStarted: action.gameStarted, 
+            instructionsExpanded: state.instructionsExpanded // We should not reverse any instruction expanded neither and disturb the value
+        }
+    }
+    if( action.type === SET_INSTRUCTIONS_EXPANDED ) {
+        return {
+            gameStarted: state.gameStarted,
+            instructionsExpanded: action.instructionsExpanded // USER CLICK Show Instruction: We do not want to disturb the curren status
+        }
+    }
 
+    if ( action.type === DECK.FETCH_SUCCESS ) {
+        const { remaining, deck_id } = action
+        return {...state, remaining, deck_id }
+    }
+    return state;   
+}
 
-const store = createStore(rootReducer, composeWithDevTools());
-
-
-
-// Store.subscribe takes a call back which fire everytime store gets interacted with and updated 
-store.subscribe(() => console.log("store.getState()", store.getState()));
-
-ReactDOM.render(
-    
-    <Provider store={store}>
-      <App /> 
-    </Provider>,
-    document.getElementById('root')
-    );
-
+export default rootReducer;
