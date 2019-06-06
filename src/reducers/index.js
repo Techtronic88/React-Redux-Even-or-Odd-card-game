@@ -1,4 +1,4 @@
-import  { SET_GAME_STARTED, SET_INSTRUCTIONS_EXPANDED} from "../action/types";
+import  { SET_GAME_STARTED, SET_INSTRUCTIONS_EXPANDED, DECK } from "../action/types";
 
 const DEFAULT_SETTINGS = {
     gameStarted: true,
@@ -19,6 +19,15 @@ const rootReducer = (state = DEFAULT_SETTINGS, action) => {
             gameStarted: state.gameStarted,
             instructionsExpanded: action.instructionsExpanded // USER CLICK Show Instruction: We do not want to disturb the curren status
         }
+    }
+
+    if ( action.type === DECK.FETCH_SUCCESS ) {
+        const { remaining, deck_id } = action
+        return {...state, remaining, deck_id }
+    }
+
+    if ( action.type === DECK.FETCH_DECK_ERROR) {
+        return {...state, message: action.message }
     }
     return state;   
 }
